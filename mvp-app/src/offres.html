@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FacturMaroc — Conformité DGI 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: {
+          950: '#0b1e4a',
+          900: '#0f2559',
+          800: '#1e3a8a',
+          700: '#2348a8',
+          600: '#2d58c8',
+        },
+        slate: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+        },
+        gold: '#c9973a',
+      },
+      fontFamily: {
+        display: ['Sora', 'sans-serif'],
+        body: ['DM Sans', 'sans-serif'],
+      },
+      boxShadow: {
+        'card': '0 4px 24px rgba(30,58,138,0.08), 0 1px 4px rgba(30,58,138,0.04)',
+        'card-hover': '0 12px 40px rgba(30,58,138,0.14), 0 2px 8px rgba(30,58,138,0.08)',
+        'hero': '0 24px 80px rgba(30,58,138,0.18)',
+        'cta': '0 8px 32px rgba(30,58,138,0.32)',
+        'cta-hover': '0 16px 48px rgba(30,58,138,0.44)',
+      },
+    }
+  }
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #1e293b; }
+  h1, h2, h3, h4, .font-display { font-family: 'Sora', sans-serif; }
+
+  /* Grid pattern background */
+  .grid-bg {
+    background-color: #0f2559;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Gradient orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .orb-1 { width: 500px; height: 500px; background: rgba(45,88,200,0.25); top: -120px; right: -100px; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(201,151,58,0.12); bottom: 60px; left: -60px; }
+
+  /* Nav glassmorphism */
+  .nav-glass {
+    background: rgba(11,30,74,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(201,151,58,0.12);
+    border: 1px solid rgba(201,151,58,0.28);
+    color: #e0b55a;
+    font-family: 'Sora', sans-serif;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 5px 12px; border-radius: 999px;
+  }
+
+  /* CTA button */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #2d58c8 0%, #1e3a8a 100%);
+    color: #fff; font-family: 'Sora', sans-serif; font-weight: 600;
+    padding: 14px 28px; border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(30,58,138,0.32);
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    border: none; cursor: pointer; text-decoration: none; font-size: 15px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(30,58,138,0.44);
+    background: linear-gradient(135deg, #3262d8 0%, #243ea0 100%);
+  }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: rgba(255,255,255,0.82); font-family: 'Sora', sans-serif; font-weight: 500;
+    padding: 9px 20px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.16);
+    transition: all 0.2s ease; cursor: pointer; text-decoration: none; font-size: 14px;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.3); }
+
+  /* Feature card */
+  .feature-card {
+    background: #fff;
+    border: 1px solid rgba(30,58,138,0.08);
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 4px 24px rgba(30,58,138,0.06);
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #2d58c8, #1e3a8a);
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(30,58,138,0.12);
+    border-color: rgba(30,58,138,0.14);
+  }
+  .feature-card:hover::before { opacity: 1; }
+
+  .icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(45,88,200,0.1), rgba(30,58,138,0.06));
+    border: 1px solid rgba(30,58,138,0.1);
+    margin-bottom: 20px;
+  }
+
+  /* Pricing card */
+  .pricing-card {
+    background: #fff;
+    border: 1px solid rgba(30,58,138,0.09);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 24px rgba(30,58,138,0.06);
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(30,58,138,0.12);
+  }
+  .pricing-card.featured {
+    background: linear-gradient(160deg, #1e3a8a 0%, #0f2559 100%);
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 12px 48px rgba(30,58,138,0.35);
+  }
+  .pricing-card.featured:hover {
+    box-shadow: 0 24px 64px rgba(30,58,138,0.45);
+  }
+  .popular-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, #c9973a, #e0b55a);
+    color: #fff; font-family: 'Sora', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    padding: 5px 16px; border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* Checkmark list */
+  .check-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .check-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Trust bar */
+  .trust-bar {
+    background: linear-gradient(90deg, #0f2559 0%, #1e3a8a 50%, #0f2559 100%);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Divider */
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(30,58,138,0.12), transparent); margin: 0 auto; max-width: 600px; }
+
+  /* Step pill */
+  .step-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #2d58c8, #1e3a8a);
+    color: #fff; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Stat card */
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 24px 20px; text-align: center;
+  }
+
+  /* Footer */
+  footer { background: #0b1e4a; }
+
+  /* Responsive nav */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero-btns { flex-direction: column; align-items: stretch; }
+    .pricing-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* Scroll reveal animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; opacity: 0; }
+  .delay-2 { animation-delay: 0.2s; opacity: 0; }
+  .delay-3 { animation-delay: 0.3s; opacity: 0; }
+  .delay-4 { animation-delay: 0.4s; opacity: 0; }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- ═══════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════ -->
+<nav class="nav-glass sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-16">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2.5 text-white no-underline">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2d58c8,#1e3a8a);display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:17px;letter-spacing:-0.02em;">Factur<span style="color:#e0b55a;">Maroc</span></span>
+    </a>
+
+    <!-- Nav links -->
+    <div class="nav-links flex items-center gap-6">
+      <a href="#features" style="color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Fonctionnalités</a>
+      <a href="#pricing" style="color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Tarifs</a>
+      <a href="#contact" style="color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Contact</a>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex items-center gap-3">
+      <a href="#" class="btn-outline" style="display:none;" id="connexion-btn">Connexion</a>
+      <a href="#" class="btn-outline nav-links">Connexion</a>
+      <a href="#" class="btn-primary" style="padding:10px 20px;font-size:14px;">
+        Essai gratuit
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════ -->
+<section class="grid-bg relative overflow-hidden" style="min-height:88vh;display:flex;align-items:center;">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="max-w-6xl mx-auto px-5 py-24 w-full">
+    <div class="max-w-3xl">
+
+      <!-- Badge -->
+      <div class="fade-up delay-1 mb-6">
+        <span class="badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Réforme DGI 2026 — Mise en conformité obligatoire
+        </span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="fade-up delay-2" style="font-family:'Sora',sans-serif;font-size:clamp(36px,5.5vw,62px);font-weight:800;color:#fff;line-height:1.12;letter-spacing:-0.03em;margin:0 0 20px;">
+        Votre facture certifiée<br>
+        <span style="background:linear-gradient(90deg,#5b8aff,#8ab4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">DGI 2026</span> en 3 clics
+      </h1>
+
+      <!-- Sub-headline -->
+      <p class="fade-up delay-3" style="font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,0.62);font-weight:300;line-height:1.7;max-width:560px;margin:0 0 36px;">
+        Ne subissez plus la réforme 2026, <strong style="color:rgba(255,255,255,0.82);font-weight:500;">transformez-la en avantage.</strong> Passez du papier au format UBL&nbsp;2.1 XML dès maintenant et concentrez-vous sur ce qui compte vraiment.
+      </p>
+
+      <!-- CTAs -->
+      <div class="fade-up delay-4 hero-btns flex gap-4 flex-wrap" style="margin-bottom:48px;">
+        <a href="http://localhost:5173/" class="btn-primary" style="font-size:16px;padding:16px 32px;">
+          Démarrer mon essai gratuit
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#features" class="btn-outline" style="font-size:15px;padding:16px 24px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="10 15 15 12 10 9 10 15"/></svg>
+          Voir les fonctionnalités
+        </a>
+      </div>
+
+      <!-- Stats row -->
+      <div class="fade-up delay-4 grid grid-cols-3 gap-4" style="max-width:480px;">
+        <div class="stat-card">
+          <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.03em;">500+</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;font-weight:400;">TPE clientes</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.03em;">100%</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;font-weight:400;">Conforme DGI</div>
+        </div>
+        <div class="stat-card">
+          <div style="font-family:'Sora',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.03em;">3 min</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:3px;font-weight:400;">Onboarding</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom wave -->
+  <div style="position:absolute;bottom:0;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 72" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:72px;display:block;">
+      <path d="M0 72L1440 72L1440 28C1200 72 960 0 720 0C480 0 240 72 0 28L0 72Z" fill="#f8fafc"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     TRUST BAR
+═══════════════════════════════════════ -->
+<div class="trust-bar py-4">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="flex flex-wrap items-center justify-center gap-8">
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:400;letter-spacing:0.01em;">Conforme aux normes <strong style="color:#e0b55a;font-weight:600;">DGI 2026</strong></span>
+      </div>
+      <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:400;">Loi <strong style="color:#e0b55a;font-weight:600;">09-08</strong> — Protection des données (CNDP)</span>
+      </div>
+      <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:400;">Format <strong style="color:#e0b55a;font-weight:600;">UBL 2.1 XML</strong> certifié</span>
+      </div>
+      <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
+      <div class="flex items-center gap-2.5">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span style="font-size:13px;color:rgba(255,255,255,0.75);font-weight:400;">Archivage <strong style="color:#e0b55a;font-weight:600;">10 ans</strong> sécurisé</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════ -->
+<section style="padding:80px 0 60px;background:#f8fafc;">
+  <div class="max-w-6xl mx-auto px-5">
+    <div style="text-align:center;margin-bottom:52px;">
+      <div style="display:inline-block;background:rgba(30,58,138,0.06);border:1px solid rgba(30,58,138,0.1);color:#1e3a8a;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;padding:5px 14px;border-radius:999px;text-transform:uppercase;margin-bottom:16px;">Comment ça marche</div>
+      <h2 style="font-family:'Sora',sans-serif;font-size:clamp(26px,3.5vw,36px);font-weight:700;color:#0f2559;letter-spacing:-0.02em;margin:0 0 12px;">3 étapes. C'est tout.</h2>
+      <p style="font-size:16px;color:#64748b;max-width:480px;margin:0 auto;font-weight:400;line-height:1.65;">De la saisie à la conformité DGI en moins de 3 minutes, même sans formation comptable.</p>
+    </div>
+
+    <div class="grid gap-8" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <!-- Step 1 -->
+      <div style="text-align:center;padding:20px 16px;">
+        <div style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(45,88,200,0.1),rgba(30,58,138,0.05));border:1px solid rgba(30,58,138,0.1);display:flex;align-items:center;justify-content:center;position:relative;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <div style="position:absolute;top:-10px;right:-10px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#2d58c8,#1e3a8a);color:#fff;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</div>
+          </div>
+        </div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:17px;font-weight:600;color:#0f2559;margin:0 0 10px;">Saisissez</h3>
+        <p style="font-size:14px;color:#64748b;line-height:1.65;margin:0;">Entrez les informations de votre client et les lignes de facture dans notre interface intuitive.</p>
+      </div>
+      <!-- Connector -->
+      <div style="display:flex;align-items:center;justify-content:center;padding:20px 0;" class="hidden md:flex">
+        <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M0 8H36M36 8L30 3M36 8L30 13" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <!-- Step 2 -->
+      <div style="text-align:center;padding:20px 16px;">
+        <div style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(45,88,200,0.1),rgba(30,58,138,0.05));border:1px solid rgba(30,58,138,0.1);display:flex;align-items:center;justify-content:center;position:relative;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <div style="position:absolute;top:-10px;right:-10px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#2d58c8,#1e3a8a);color:#fff;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">2</div>
+          </div>
+        </div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:17px;font-weight:600;color:#0f2559;margin:0 0 10px;">Générez</h3>
+        <p style="font-size:14px;color:#64748b;line-height:1.65;margin:0;">FacturMaroc génère automatiquement le fichier XML UBL 2.1 et valide l'ICE 15 chiffres.</p>
+      </div>
+      <!-- Connector -->
+      <div style="display:flex;align-items:center;justify-content:center;padding:20px 0;" class="hidden md:flex">
+        <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M0 8H36M36 8L30 3M36 8L30 13" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <!-- Step 3 -->
+      <div style="text-align:center;padding:20px 16px;">
+        <div style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(45,88,200,0.1),rgba(30,58,138,0.05));border:1px solid rgba(30,58,138,0.1);display:flex;align-items:center;justify-content:center;position:relative;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <div style="position:absolute;top:-10px;right:-10px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#c9973a,#e0b55a);color:#fff;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;">3</div>
+          </div>
+        </div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:17px;font-weight:600;color:#0f2559;margin:0 0 10px;">Transmettez</h3>
+        <p style="font-size:14px;color:#64748b;line-height:1.65;margin:0;">Envoyez directement à la DGI et archivez pendant 10 ans dans notre coffre numérique sécurisé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+
+<!-- ═══════════════════════════════════════
+     FEATURES GRID
+═══════════════════════════════════════ -->
+<section id="features" style="padding:80px 0;background:#f8fafc;">
+  <div class="max-w-6xl mx-auto px-5">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div style="display:inline-block;background:rgba(30,58,138,0.06);border:1px solid rgba(30,58,138,0.1);color:#1e3a8a;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;padding:5px 14px;border-radius:999px;text-transform:uppercase;margin-bottom:16px;">Fonctionnalités clés</div>
+      <h2 style="font-family:'Sora',sans-serif;font-size:clamp(26px,3.5vw,36px);font-weight:700;color:#0f2559;letter-spacing:-0.02em;margin:0 0 12px;">Tout ce dont votre TPE a besoin</h2>
+      <p style="font-size:16px;color:#64748b;max-width:520px;margin:0 auto;line-height:1.65;">Conçu spécifiquement pour les petites entreprises marocaines. Aucune compétence comptable requise.</p>
+    </div>
+
+    <div class="grid gap-6" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+
+      <!-- Card 1: Conformité -->
+      <div class="feature-card">
+        <div class="icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div style="display:inline-block;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#15803d;font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:3px 10px;border-radius:999px;margin-bottom:14px;">CONFORMITÉ TOTALE</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:#0f2559;margin:0 0 10px;letter-spacing:-0.01em;">Génération UBL 2.1 XML</h3>
+        <p style="font-size:14.5px;color:#64748b;line-height:1.7;margin:0 0 20px;">Vos factures sont automatiquement converties au format UBL 2.1 XML, le seul format accepté par la DGI. Zéro rejet, zéro amende.</p>
+        <div style="border-top:1px solid rgba(30,58,138,0.06);padding-top:16px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Validation automatique avant transmission</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Mise à jour automatique des normes DGI</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Accusé de réception horodaté</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Sécurité 09-08 -->
+      <div class="feature-card">
+        <div class="icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div style="display:inline-block;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:#1d4ed8;font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:3px 10px;border-radius:999px;margin-bottom:14px;">SÉCURITÉ LOI 09-08</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:#0f2559;margin:0 0 10px;letter-spacing:-0.01em;">Archivage 10 ans sécurisé</h3>
+        <p style="font-size:14.5px;color:#64748b;line-height:1.7;margin:0 0 20px;">Protection des données personnelles conforme à la loi marocaine 09-08 et au CNDP. Vos données ne quittent jamais le territoire national.</p>
+        <div style="border-top:1px solid rgba(30,58,138,0.06);padding-top:16px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Chiffrement AES-256 de bout en bout</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Serveurs hébergés au Maroc (CNDP)</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Conservation légale 10 ans garantie</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: ICE -->
+      <div class="feature-card">
+        <div class="icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </div>
+        <div style="display:inline-block;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);color:#b45309;font-family:'Sora',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;padding:3px 10px;border-radius:999px;margin-bottom:14px;">CONTRÔLE ICE</div>
+        <h3 style="font-family:'Sora',sans-serif;font-size:19px;font-weight:700;color:#0f2559;margin:0 0 10px;letter-spacing:-0.01em;">Validation ICE automatique</h3>
+        <p style="font-size:14.5px;color:#64748b;line-height:1.7;margin:0 0 20px;">Vérification instantanée de l'Identifiant Commun de l'Entreprise à 15 chiffres. Aucune facture rejetée pour ICE invalide ou manquant.</p>
+        <div style="border-top:1px solid rgba(30,58,138,0.06);padding-top:16px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Vérification du format 15 chiffres</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Alerte en temps réel avant envoi</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:13.5px;color:#475569;">Annuaire ICE intégré (RC, CNSS, IF)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     PRICING SECTION
+═══════════════════════════════════════ -->
+<section id="pricing" style="padding:80px 0 100px;background:linear-gradient(180deg,#f1f5f9 0%,#f8fafc 100%);">
+  <div class="max-w-6xl mx-auto px-5">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div style="display:inline-block;background:rgba(30,58,138,0.06);border:1px solid rgba(30,58,138,0.1);color:#1e3a8a;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;padding:5px 14px;border-radius:999px;text-transform:uppercase;margin-bottom:16px;">Tarification</div>
+      <h2 style="font-family:'Sora',sans-serif;font-size:clamp(26px,3.5vw,36px);font-weight:700;color:#0f2559;letter-spacing:-0.02em;margin:0 0 12px;">Des tarifs adaptés aux TPE marocaines</h2>
+      <p style="font-size:16px;color:#64748b;max-width:480px;margin:0 auto;line-height:1.65;">Sans engagement. Sans frais cachés. Sans surprise. Commencez gratuitement pendant 14 jours.</p>
+    </div>
+
+    <div class="pricing-grid grid gap-6 justify-center" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));max-width:960px;margin:0 auto;">
+
+      <!-- Pack Start -->
+      <div class="pricing-card">
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#64748b;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Pack Start</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:6px;">
+            <span style="font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:#0f2559;letter-spacing:-0.04em;line-height:1;">100</span>
+            <span style="font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:#64748b;margin-bottom:6px;">DH<span style="font-size:13px;font-weight:400;">/mois</span></span>
+          </div>
+          <p style="font-size:13.5px;color:#64748b;margin:0;">Idéal pour démarrer — jusqu'à 50 factures/mois</p>
+        </div>
+        <div style="border-top:1px solid rgba(30,58,138,0.07);padding-top:20px;margin-bottom:24px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Jusqu'à <strong style="color:#0f2559;">50 factures</strong>/mois</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Génération UBL 2.1 XML</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Validation ICE automatique</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Archivage sécurisé 10 ans</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="font-size:14px;color:#94a3b8;">Support prioritaire</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span style="font-size:14px;color:#94a3b8;">Multi-utilisateurs</span>
+          </div>
+        </div>
+        <a href="#" style="display:block;text-align:center;padding:13px;border-radius:12px;border:1.5px solid rgba(30,58,138,0.2);color:#1e3a8a;font-family:'Sora',sans-serif;font-weight:600;font-size:14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(30,58,138,0.05)';this.style.borderColor='rgba(30,58,138,0.35)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(30,58,138,0.2)'">Choisir Start</a>
+      </div>
+
+      <!-- Pack Pro (Featured) -->
+      <div class="pricing-card featured" style="position:relative;">
+        <div class="popular-badge">⭐ LE PLUS POPULAIRE</div>
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.55);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Pack Pro</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:6px;">
+            <span style="font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:#fff;letter-spacing:-0.04em;line-height:1;">250</span>
+            <span style="font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:6px;">DH<span style="font-size:13px;font-weight:400;">/mois</span></span>
+          </div>
+          <p style="font-size:13.5px;color:rgba(255,255,255,0.6);margin:0;">Pour les entreprises actives — facturation illimitée</p>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:20px;margin-bottom:24px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);"><strong style="color:#fff;">Factures illimitées</strong></span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);">Génération UBL 2.1 XML</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);">Validation ICE automatique</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);">Archivage sécurisé 10 ans</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);"><strong style="color:#fff;">Support prioritaire</strong> (réponse &lt;2h)</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#e0b55a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:rgba(255,255,255,0.85);">Multi-utilisateurs (3 accès)</span>
+          </div>
+        </div>
+        <a href="#" class="btn-primary" style="display:block;text-align:center;padding:14px;font-size:14px;border-radius:12px;background:linear-gradient(135deg,#c9973a,#e0b55a);box-shadow:0 6px 24px rgba(201,151,58,0.4);" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 10px 32px rgba(201,151,58,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 24px rgba(201,151,58,0.4)'">Choisir Pro</a>
+      </div>
+
+      <!-- Option Formation -->
+      <div class="pricing-card">
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:#64748b;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;">Option Formation</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;margin-bottom:6px;">
+            <span style="font-family:'Sora',sans-serif;font-size:44px;font-weight:800;color:#0f2559;letter-spacing:-0.04em;line-height:1;">500</span>
+            <span style="font-family:'Sora',sans-serif;font-size:18px;font-weight:600;color:#64748b;margin-bottom:6px;">DH<span style="font-size:13px;font-weight:400;">/pers.</span></span>
+          </div>
+          <p style="font-size:13.5px;color:#64748b;margin:0;">Formation complète à la facturation électronique DGI</p>
+        </div>
+        <div style="border-top:1px solid rgba(30,58,138,0.07);padding-top:20px;margin-bottom:24px;">
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;"><strong style="color:#0f2559;">1 journée</strong> de formation présentielle</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Maîtrise de la réforme DGI 2026</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Prise en main complète FacturMaroc</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Attestation de formation certifiée</span>
+          </div>
+          <div class="check-item">
+            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="#2d58c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:14px;color:#475569;">Support 30 jours post-formation</span>
+          </div>
+        </div>
+        <a href="#contact" style="display:block;text-align:center;padding:13px;border-radius:12px;border:1.5px solid rgba(30,58,138,0.2);color:#1e3a8a;font-family:'Sora',sans-serif;font-weight:600;font-size:14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(30,58,138,0.05)';this.style.borderColor='rgba(30,58,138,0.35)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(30,58,138,0.2)'">Réserver une session</a>
+      </div>
+
+    </div>
+
+    <!-- Free trial note -->
+    <p style="text-align:center;font-size:13px;color:#94a3b8;margin-top:32px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Essai gratuit 14 jours • Aucune carte bancaire requise • Annulation à tout moment
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     CTA BANNER
+═══════════════════════════════════════ -->
+<section id="contact" class="grid-bg relative overflow-hidden" style="padding:80px 20px;">
+  <div class="orb" style="width:400px;height:400px;background:rgba(45,88,200,0.2);top:-100px;right:-80px;"></div>
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <div style="display:inline-block;background:rgba(201,151,58,0.15);border:1px solid rgba(201,151,58,0.3);color:#e0b55a;font-family:'Sora',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;padding:5px 14px;border-radius:999px;margin-bottom:20px;">⚡ JANVIER 2026 ARRIVE VITE</div>
+    <h2 style="font-family:'Sora',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;color:#fff;letter-spacing:-0.03em;margin:0 0 16px;line-height:1.15;">Prêt pour la conformité DGI&nbsp;2026&nbsp;?</h2>
+    <p style="font-size:17px;color:rgba(255,255,255,0.6);line-height:1.65;max-width:520px;margin:0 auto 36px;font-weight:300;">Rejoignez plus de 500 TPE marocaines qui ont déjà choisi FacturMaroc. Votre première facture certifiée DGI en moins de 3 minutes.</p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="http://localhost:5173/" class="btn-primary" style="font-size:16px;padding:16px 36px;">
+        Démarrer mon essai gratuit — 14 jours
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="tel:+212500000000" class="btn-outline" style="font-size:15px;padding:16px 24px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.46 2 2 0 0 1 3.62 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Appeler un conseiller
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer style="background:#0b1e4a;padding:48px 20px 32px;border-top:1px solid rgba(255,255,255,0.05);">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid gap-10" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-bottom:40px;">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-2.5 mb-4">
+          <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#2d58c8,#1e3a8a);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:17px;color:#fff;">Factur<span style="color:#e0b55a;">Maroc</span></span>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.7;max-width:220px;font-weight:300;">La solution de facturation électronique conforme DGI pour les TPE marocaines.</p>
+      </div>
+      <!-- Links -->
+      <div>
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Produit</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="#features" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Fonctionnalités</a>
+          <a href="#pricing" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Tarifs</a>
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Guide DGI 2026</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Légal</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Politique de confidentialité</a>
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">CGU</a>
+          <a href="#" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Conformité CNDP</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Sora',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Contact</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="mailto:contact@facturmaroc.ma" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">contact@facturmaroc.ma</a>
+          <a href="tel:+212500000000" style="font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">+212 5 00 00 00 00</a>
+          <span style="font-size:13px;color:rgba(255,255,255,0.35);">Casablanca, Maroc</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin:0;">© 2025 FacturMaroc. Tous droits réservés. — Conforme <strong style="color:rgba(255,255,255,0.45);">DGI & CNDP (Loi 09-08)</strong></p>
+      <div class="flex gap-4">
+        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#4ade80;font-family:'Sora',sans-serif;font-size:10px;font-weight:600;padding:3px 10px;border-radius:999px;">
+          <span style="width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;display:inline-block;"></span>
+          Système opérationnel
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+@keyframes pulse {
+  0%,100%{opacity:1} 50%{opacity:0.4}
+}
+</style>
+
+</body>
+</html>
